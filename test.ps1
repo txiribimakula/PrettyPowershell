@@ -41,7 +41,6 @@ while($pressedKey.VirtualKeyCode -ne 13)
     if($pressedKey.VirtualKeyCode -eq 32) {
         $selectedLines = $selectedLines -bxor [math]::Pow(2, $selectedLine)
     }
-
     DeleteLines 3
 }
 
