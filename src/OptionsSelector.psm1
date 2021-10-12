@@ -64,3 +64,22 @@ function GetSelectedOptions($options) {
     
     return $selectedOptions
 }
+
+function GetSelectedOption($options) {
+    $selectedOption = 0
+    
+    while($pressedKeyCode -ne 13)
+    {
+        WriteOptions $options -1 $selectedOption
+        $pressedKeyCode = GetPressedKeyCode
+        switch ($pressedKeyCode) {
+            40 { $selectedOption = MoveToNext $selectedOption $options.Count }
+            38 { $selectedOption = MoveToPrevious $selectedOption $options.Count }
+        }
+        DeleteLines $options.Count
+    }
+    
+    WriteOptions $options -1 -1
+    
+    return $selectedOption
+}
