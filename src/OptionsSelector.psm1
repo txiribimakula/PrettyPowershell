@@ -1,6 +1,8 @@
 function WriteOption($index, $text, $selectedOptions, $selectedOption) {
-    $optionSelectorText = $(If ($selectedOptions -band [math]::Pow(2, $index)) {"[x]"} Else {"[ ]"})
-    Write-Host $optionSelectorText $text -ForegroundColor $(If ($selectedOption -eq $index) {"Green"} Else {"White"})
+    if($selectedOptions -ne -1) {
+        $prependText = $(If ($selectedOptions -band [math]::Pow(2, $index)) {"[x]"} Else {"[ ]"})
+    }
+    Write-Host $prependText $text -ForegroundColor $(If ($selectedOption -eq $index) {"Green"} Else {"White"})
 }
 
 function WriteOptions($texts, $selectedOptions, $selectedOption) {
