@@ -41,20 +41,26 @@ function MoveToPrevious() {
     return $selectedLine - 1
 }
 
-$selectedLine = 0
-$selectedLines = 0
-$options = @("Option 1", "Option 2", "Option 3")
-
-while($pressedKeyCode -ne 13)
-{
-    WriteOptions $options $selectedLines $selectedLine
-    $pressedKeyCode = GetPressedKeyCode
-    switch ($pressedKeyCode) {
-        40 { $selectedLine = MoveToNext $selectedLine }
-        38 { $selectedLine = MoveToPrevious $selectedLine }
-        32 { $selectedLines = ToggleSelection $selectedLine }
+function GetSelectedOptions($options) {
+    $selectedLine = 0
+    $selectedLines = 0
+    
+    while($pressedKeyCode -ne 13)
+    {
+        WriteOptions $options $selectedLines $selectedLine
+        $pressedKeyCode = GetPressedKeyCode
+        switch ($pressedKeyCode) {
+            40 { $selectedLine = MoveToNext $selectedLine }
+            38 { $selectedLine = MoveToPrevious $selectedLine }
+            32 { $selectedLines = ToggleSelection $selectedLine }
+        }
+        DeleteLines $options.Count
     }
-    DeleteLines $options.Count
+    
+    WriteOptions $options $selectedLines -1
+    
+    return $selectedLines
 }
 
-WriteOptions $options $selectedLines -1
+
+GetSelectedOptions @("Option 1", "Option 2", "Option 3")
