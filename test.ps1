@@ -27,16 +27,16 @@ function ToggleSelection($selectedLine) {
     return $selectedLines -bxor [math]::Pow(2, $selectedLine)
 }
 
-function MoveToNext() {
-    if($selectedLine -eq 2) {
+function MoveToNext($optionsCount) {
+    if($selectedLine -eq $optionsCount - 1) {
         return 0
     }
     return $selectedLine + 1
 }
 
-function MoveToPrevious() {
+function MoveToPrevious($optionsCount) {
     if($selectedLine -eq 0) {
-        return 2
+        return $optionsCount - 1
     }
     return $selectedLine - 1
 }
@@ -50,8 +50,8 @@ function GetSelectedOptions($options) {
         WriteOptions $options $selectedLines $selectedLine
         $pressedKeyCode = GetPressedKeyCode
         switch ($pressedKeyCode) {
-            40 { $selectedLine = MoveToNext $selectedLine }
-            38 { $selectedLine = MoveToPrevious $selectedLine }
+            40 { $selectedLine = MoveToNext $selectedLine $options.Count }
+            38 { $selectedLine = MoveToPrevious $selectedLine $options.Count }
             32 { $selectedLines = ToggleSelection $selectedLine }
         }
         DeleteLines $options.Count
@@ -63,4 +63,4 @@ function GetSelectedOptions($options) {
 }
 
 
-GetSelectedOptions @("Option 1", "Option 2", "Option 3")
+GetSelectedOptions @("Option 1", "Option 2", "Option 3", "Option 4")
