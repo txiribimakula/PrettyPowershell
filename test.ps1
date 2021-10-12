@@ -24,8 +24,8 @@ while($pressedKey.VirtualKeyCode -ne 13)
     $currentCursorPosition  = $Host.UI.RawUI.CursorPosition.Y
     $consoleWidth = $Host.UI.RawUI.BufferSize.Width
     $consoleHeight = 3
-    $i = 1
-    for ($i; $i -le $consoleHeight; $i++) {
+    $i = 0
+    for ($i; $i -lt $consoleHeight; $i++) {
         [Console]::SetCursorPosition(0,($currentCursorPosition - $i))
         [Console]::Write("{0,-$consoleWidth}" -f " ")
     }
