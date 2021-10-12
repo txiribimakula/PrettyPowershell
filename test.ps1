@@ -2,6 +2,17 @@ function WriteOption($index, $text, $selectedLines, $selectedLine) {
     Write-Host $(If ($selectedLines -band [math]::Pow(2, $index)) {"[x]"} Else {"[ ]"}) $text -ForegroundColor $(If ($selectedLine -eq $index) {"Green"} Else {"White"})
 }
 
+function DeleteLines($quantity) {
+    $currentCursorPosition  = $Host.UI.RawUI.CursorPosition.Y
+    $consoleWidth = $Host.UI.RawUI.BufferSize.Width
+    $i = 0
+    for ($i; $i -lt $quantity; $i++) {
+        [Console]::SetCursorPosition(0,($currentCursorPosition - $i))
+        [Console]::Write("{0,-$consoleWidth}" -f " ")
+    }
+    [Console]::SetCursorPosition(0,($currentCursorPosition - $quantity))
+}
+
 $selectedLine = 0
 $selectedLines = 0
 
@@ -25,15 +36,7 @@ while($pressedKey.VirtualKeyCode -ne 13)
         $selectedLines = $selectedLines -bxor [math]::Pow(2, $selectedLine)
     }
 
-    $currentCursorPosition  = $Host.UI.RawUI.CursorPosition.Y
-    $consoleWidth = $Host.UI.RawUI.BufferSize.Width
-    $consoleHeight = 3
-    $i = 0
-    for ($i; $i -lt $consoleHeight; $i++) {
-        [Console]::SetCursorPosition(0,($currentCursorPosition - $i))
-        [Console]::Write("{0,-$consoleWidth}" -f " ")
-    }
-    [Console]::SetCursorPosition(0,($currentCursorPosition - $consoleHeight))
+    DeleteLines 3
 }
 
 $selectedLine = -1
