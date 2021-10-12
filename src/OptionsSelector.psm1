@@ -53,7 +53,7 @@ function GetSelectedOptions($options) {
         switch ($pressedKeyCode) {
             40 { $selectedOption = MoveToNext $selectedOption $options.Count }
             38 { $selectedOption = MoveToPrevious $selectedOption $options.Count }
-            32 { $selectedOptions = ToggleSelection $selectedOption }
+            32 { $selectedOptions = ToggleSelection $selectedOption $selectedOptions }
         }
         DeleteLines $options.Count
     }
