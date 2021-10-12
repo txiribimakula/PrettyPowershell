@@ -10,5 +10,7 @@ while($pressedKey.VirtualKeyCode -ne 13)
     $pressedKey = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
     if($pressedKey.VirtualKeyCode -eq 40) {
         $currentLine = $currentLine + 1
+    } elseif($pressedKey.VirtualKeyCode -eq 38) {
+        $currentLine = $currentLine - 1
     }
 }
