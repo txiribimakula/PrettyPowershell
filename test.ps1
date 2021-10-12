@@ -19,23 +19,26 @@ function DeleteLines($quantity) {
     [Console]::SetCursorPosition(0,($currentCursorPosition - $quantity))
 }
 
-function GetSelectedLine($pressedKeyCode) {
-    if($pressedKeyCode -eq 40) {
-        $selectedLine = $selectedLine + 1
-        if($selectedLine -eq 3) {
-            $selectedLine = 0
-        }
-    } elseif($pressedKeyCode -eq 38) {
-        $selectedLine = $selectedLine - 1
-        if($selectedLine -eq -1) {
-            $selectedLine = 2
-        }
-    }
-    return $selectedLine
-}
-
 function GetPressedKeyCode() {
     return $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown").VirtualKeyCode
+}
+
+function ToggleSelection($selectedLine) {
+    return $selectedLines -bxor [math]::Pow(2, $selectedLine)
+}
+
+function MoveToNext() {
+    if($selectedLine -eq 2) {
+        return 0
+    }
+    return $selectedLine + 1
+}
+
+function MoveToPrevious() {
+    if($selectedLine -eq 0) {
+        return 2
+    }
+    return $selectedLine - 1
 }
 
 $selectedLine = 0
@@ -45,9 +48,11 @@ while($pressedKeyCode -ne 13)
 {
     WriteOptions @("Option 1", "Option 2", "Option 3") $selectedLines $selectedLine
     $pressedKeyCode = GetPressedKeyCode
-    $selectedLine = GetSelectedLine $pressedKeyCode
-    if($pressedKeyCode -eq 32) {
-        $selectedLines = $selectedLines -bxor [math]::Pow(2, $selectedLine)
+    switch ($pressedKeyCode) {
+        40 { $selectedLine = MoveToNext $selectedLine }
+        38 { $selectedLine = MoveToPrevious $selectedLine }
+        32 { $selectedLines = ToggleSelection $selectedLine }
+        Default {}
     }
     DeleteLines 3
 }
