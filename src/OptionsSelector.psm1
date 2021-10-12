@@ -1,15 +1,15 @@
-function WriteOption($index, $text, $selectedOptions, $selectedOption) {
+function WriteOption($index, $text, $selectedOptions, $selectedOption, $isResult) {
     if($selectedOptions -ne -1) {
         $prependText = $(If ($selectedOptions -band [math]::Pow(2, $index)) {" [x]"} Else {" [ ]"})
     } else {
         $prependText = $(If ($selectedOption -eq $index) {" (x)"} Else {" ( )"})
     }
-    Write-Host $prependText $text -ForegroundColor $(If ($selectedOption -eq $index) {"Green"} Else {"White"})
+    Write-Host $prependText $text -ForegroundColor $(If ($selectedOption -eq $index -and $isResult -eq $false) {"Green"} Else {"White"})
 }
 
-function WriteOptions($texts, $selectedOptions, $selectedOption) {
+function WriteOptions($texts, $selectedOptions, $selectedOption, $isResult = $false) {
     for ($i = 0; $i -lt  $texts.Count; $i++) {
-        WriteOption $i $texts[$i] $selectedOptions $selectedOption
+        WriteOption $i $texts[$i] $selectedOptions $selectedOption $isResult
     }
 }
 
@@ -62,7 +62,7 @@ function GetSelectedOptions($options) {
         DeleteLines $options.Count
     }
     
-    WriteOptions $options $selectedOptions -1
+    WriteOptions $options $selectedOptions -1 $true
     
     return $selectedOptions
 }
@@ -81,7 +81,7 @@ function GetSelectedOption($options) {
         DeleteLines $options.Count
     }
     
-    WriteOptions $options -1 $selectedOption
+    WriteOptions $options -1 $selectedOption $true
     
     return $selectedOption
 }
