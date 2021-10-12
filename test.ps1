@@ -53,7 +53,6 @@ while($pressedKeyCode -ne 13)
         40 { $selectedLine = MoveToNext $selectedLine }
         38 { $selectedLine = MoveToPrevious $selectedLine }
         32 { $selectedLines = ToggleSelection $selectedLine }
-        Default {}
     }
     DeleteLines $options.Count
 }
