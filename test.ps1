@@ -1,10 +1,10 @@
-function WriteOption($index, $text, $selectedLines, $selectedLine) {
-    Write-Host $(If ($selectedLines -band [math]::Pow(2, $index)) {"[x]"} Else {"[ ]"}) $text -ForegroundColor $(If ($selectedLine -eq $index) {"Green"} Else {"White"})
+function WriteOption($index, $text, $selectedOptions, $selectedOption) {
+    Write-Host $(If ($selectedOptions -band [math]::Pow(2, $index)) {"[x]"} Else {"[ ]"}) $text -ForegroundColor $(If ($selectedOption -eq $index) {"Green"} Else {"White"})
 }
 
-function WriteOptions($texts, $selectedLines, $selectedLine) {
+function WriteOptions($texts, $selectedOptions, $selectedOption) {
     for ($i = 0; $i -lt  $texts.Count; $i++) {
-        WriteOption $i $texts[$i] $selectedLines $selectedLine
+        WriteOption $i $texts[$i] $selectedOptions $selectedOption
     }
 }
 
@@ -23,43 +23,43 @@ function GetPressedKeyCode() {
     return $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown").VirtualKeyCode
 }
 
-function ToggleSelection($selectedLine) {
-    return $selectedLines -bxor [math]::Pow(2, $selectedLine)
+function ToggleSelection($selectedOption) {
+    return $selectedOptions -bxor [math]::Pow(2, $selectedOption)
 }
 
 function MoveToNext($optionsCount) {
-    if($selectedLine -eq $optionsCount - 1) {
+    if($selectedOption -eq $optionsCount - 1) {
         return 0
     }
-    return $selectedLine + 1
+    return $selectedOption + 1
 }
 
 function MoveToPrevious($optionsCount) {
-    if($selectedLine -eq 0) {
+    if($selectedOption -eq 0) {
         return $optionsCount - 1
     }
-    return $selectedLine - 1
+    return $selectedOption - 1
 }
 
 function GetSelectedOptions($options) {
-    $selectedLine = 0
-    $selectedLines = 0
+    $selectedOption = 0
+    $selectedOptions = 0
     
     while($pressedKeyCode -ne 13)
     {
-        WriteOptions $options $selectedLines $selectedLine
+        WriteOptions $options $selectedOptions $selectedOption
         $pressedKeyCode = GetPressedKeyCode
         switch ($pressedKeyCode) {
-            40 { $selectedLine = MoveToNext $selectedLine $options.Count }
-            38 { $selectedLine = MoveToPrevious $selectedLine $options.Count }
-            32 { $selectedLines = ToggleSelection $selectedLine }
+            40 { $selectedOption = MoveToNext $selectedOption $options.Count }
+            38 { $selectedOption = MoveToPrevious $selectedOption $options.Count }
+            32 { $selectedOptions = ToggleSelection $selectedOption }
         }
         DeleteLines $options.Count
     }
     
-    WriteOptions $options $selectedLines -1
+    WriteOptions $options $selectedOptions -1
     
-    return $selectedLines
+    return $selectedOptions
 }
 
 
