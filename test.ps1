@@ -3,7 +3,6 @@ $selectedLines = 0
 
 while($pressedKey.VirtualKeyCode -ne 13)
 {
-    Clear-Host
     Write-Host $(If ($selectedLines -band 1) {"[x]"} Else {"[ ]"}) "Option 1" -ForegroundColor $(If ($currentLine -eq 0) {"Green"} Else {"White"})
     Write-Host $(If ($selectedLines -band 2) {"[x]"} Else {"[ ]"}) "Option 2" -ForegroundColor $(If ($currentLine -eq 1) {"Green"} Else {"White"})
     Write-Host $(If ($selectedLines -band 4) {"[x]"} Else {"[ ]"}) "Option 3" -ForegroundColor $(If ($currentLine -eq 2) {"Green"} Else {"White"})
@@ -21,4 +20,14 @@ while($pressedKey.VirtualKeyCode -ne 13)
     } elseif($pressedKey.VirtualKeyCode -eq 32) {
         $selectedLines = $selectedLines -bxor [math]::Pow(2, $currentLine)
     }
+
+    $currentCursorPosition  = $Host.UI.RawUI.CursorPosition.Y
+    $consoleWidth = $Host.UI.RawUI.BufferSize.Width
+    $consoleHeight = 3
+    $i = 1
+    for ($i; $i -le $consoleHeight; $i++) {
+        [Console]::SetCursorPosition(0,($currentCursorPosition - $i))
+        [Console]::Write("{0,-$consoleWidth}" -f " ")
+    }
+    [Console]::SetCursorPosition(0,($currentCursorPosition - $consoleHeight))
 }
