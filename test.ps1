@@ -1,11 +1,15 @@
+function WriteOption($index, $text, $selectedLines, $selectedLine) {
+    Write-Host $(If ($selectedLines -band [math]::Pow(2, $index)) {"[x]"} Else {"[ ]"}) $text -ForegroundColor $(If ($selectedLine -eq $index) {"Green"} Else {"White"})
+}
+
 $selectedLine = 0
 $selectedLines = 0
 
 while($pressedKey.VirtualKeyCode -ne 13)
 {
-    Write-Host $(If ($selectedLines -band 1) {"[x]"} Else {"[ ]"}) "Option 1" -ForegroundColor $(If ($selectedLine -eq 0) {"Green"} Else {"White"})
-    Write-Host $(If ($selectedLines -band 2) {"[x]"} Else {"[ ]"}) "Option 2" -ForegroundColor $(If ($selectedLine -eq 1) {"Green"} Else {"White"})
-    Write-Host $(If ($selectedLines -band 4) {"[x]"} Else {"[ ]"}) "Option 3" -ForegroundColor $(If ($selectedLine -eq 2) {"Green"} Else {"White"})
+    WriteOption 0 "Option 1" $selectedLines $selectedLine
+    WriteOption 1 "Option 2" $selectedLines $selectedLine
+    WriteOption 2 "Option 3" $selectedLines $selectedLine
     $pressedKey = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
     if($pressedKey.VirtualKeyCode -eq 40) {
         $selectedLine = $selectedLine + 1
@@ -33,6 +37,6 @@ while($pressedKey.VirtualKeyCode -ne 13)
 }
 
 $selectedLine = -1
-Write-Host $(If ($selectedLines -band 1) {"[x]"} Else {"[ ]"}) "Option 1" -ForegroundColor $(If ($selectedLine -eq 0) {"Green"} Else {"White"})
-Write-Host $(If ($selectedLines -band 2) {"[x]"} Else {"[ ]"}) "Option 2" -ForegroundColor $(If ($selectedLine -eq 1) {"Green"} Else {"White"})
-Write-Host $(If ($selectedLines -band 4) {"[x]"} Else {"[ ]"}) "Option 3" -ForegroundColor $(If ($selectedLine -eq 2) {"Green"} Else {"White"})
+WriteOption "Option 1" $selectedLines $selectedLine
+WriteOption "Option 2" $selectedLines $selectedLine
+WriteOption "Option 3" $selectedLines $selectedLine
