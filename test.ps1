@@ -45,7 +45,6 @@ while($pressedKey.VirtualKeyCode -ne 13)
     DeleteLines 3
 }
 
-$selectedLine = -1
-WriteOption 0 "Option 1" $selectedLines $selectedLine
-WriteOption 1 "Option 2" $selectedLines $selectedLine
-WriteOption 2 "Option 3" $selectedLines $selectedLine
+WriteOption 0 "Option 1" $selectedLines -1
+WriteOption 1 "Option 2" $selectedLines -1
+WriteOption 2 "Option 3" $selectedLines -1
