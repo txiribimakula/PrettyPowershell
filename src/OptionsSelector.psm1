@@ -1,5 +1,6 @@
 function WriteOption($index, $text, $selectedOptions, $selectedOption) {
-    Write-Host $(If ($selectedOptions -band [math]::Pow(2, $index)) {"[x]"} Else {"[ ]"}) $text -ForegroundColor $(If ($selectedOption -eq $index) {"Green"} Else {"White"})
+    $optionSelectorText = $(If ($selectedOptions -band [math]::Pow(2, $index)) {"[x]"} Else {"[ ]"})
+    Write-Host $optionSelectorText $text -ForegroundColor $(If ($selectedOption -eq $index) {"Green"} Else {"White"})
 }
 
 function WriteOptions($texts, $selectedOptions, $selectedOption) {
@@ -23,7 +24,7 @@ function GetPressedKeyCode() {
     return $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown").VirtualKeyCode
 }
 
-function ToggleSelection($selectedOption) {
+function ToggleSelection($selectedOption, $selectedOptions) {
     return $selectedOptions -bxor [math]::Pow(2, $selectedOption)
 }
 
