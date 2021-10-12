@@ -13,15 +13,7 @@ function DeleteLines($quantity) {
     [Console]::SetCursorPosition(0,($currentCursorPosition - $quantity))
 }
 
-$selectedLine = 0
-$selectedLines = 0
-
-while($pressedKey.VirtualKeyCode -ne 13)
-{
-    WriteOption 0 "Option 1" $selectedLines $selectedLine
-    WriteOption 1 "Option 2" $selectedLines $selectedLine
-    WriteOption 2 "Option 3" $selectedLines $selectedLine
-    $pressedKey = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+function GetSelectedLine() {
     if($pressedKey.VirtualKeyCode -eq 40) {
         $selectedLine = $selectedLine + 1
         if($selectedLine -eq 3) {
@@ -32,7 +24,21 @@ while($pressedKey.VirtualKeyCode -ne 13)
         if($selectedLine -eq -1) {
             $selectedLine = 2
         }
-    } elseif($pressedKey.VirtualKeyCode -eq 32) {
+    }
+    return $selectedLine
+}
+
+$selectedLine = 0
+$selectedLines = 0
+
+while($pressedKey.VirtualKeyCode -ne 13)
+{
+    WriteOption 0 "Option 1" $selectedLines $selectedLine
+    WriteOption 1 "Option 2" $selectedLines $selectedLine
+    WriteOption 2 "Option 3" $selectedLines $selectedLine
+    $pressedKey = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+    $selectedLine = GetSelectedLine
+    if($pressedKey.VirtualKeyCode -eq 32) {
         $selectedLines = $selectedLines -bxor [math]::Pow(2, $selectedLine)
     }
 
