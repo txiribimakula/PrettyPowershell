@@ -2,6 +2,12 @@ function WriteOption($index, $text, $selectedLines, $selectedLine) {
     Write-Host $(If ($selectedLines -band [math]::Pow(2, $index)) {"[x]"} Else {"[ ]"}) $text -ForegroundColor $(If ($selectedLine -eq $index) {"Green"} Else {"White"})
 }
 
+function WriteOptions($texts, $selectedLines, $selectedLine) {
+    for ($i = 0; $i -lt  $texts.Count; $i++) {
+        WriteOption $i $texts[$i] $selectedLines $selectedLine
+    }
+}
+
 function DeleteLines($quantity) {
     $currentCursorPosition  = $Host.UI.RawUI.CursorPosition.Y
     $consoleWidth = $Host.UI.RawUI.BufferSize.Width
@@ -33,9 +39,7 @@ $selectedLines = 0
 
 while($pressedKey.VirtualKeyCode -ne 13)
 {
-    WriteOption 0 "Option 1" $selectedLines $selectedLine
-    WriteOption 1 "Option 2" $selectedLines $selectedLine
-    WriteOption 2 "Option 3" $selectedLines $selectedLine
+    WriteOptions @("Option 1", "Option 2", "Option 3") $selectedLines $selectedLine
     $pressedKey = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
     $selectedLine = GetSelectedLine
     if($pressedKey.VirtualKeyCode -eq 32) {
@@ -44,6 +48,4 @@ while($pressedKey.VirtualKeyCode -ne 13)
     DeleteLines 3
 }
 
-WriteOption 0 "Option 1" $selectedLines -1
-WriteOption 1 "Option 2" $selectedLines -1
-WriteOption 2 "Option 3" $selectedLines -1
+WriteOptions @("Option 1", "Option 2", "Option 3") $selectedLines -1
