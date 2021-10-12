@@ -79,7 +79,7 @@ function GetSelectedOption($options) {
         DeleteLines $options.Count
     }
     
-    WriteOptions $options -1 -1
+    WriteOptions $options -1 $selectedOption
     
     return $selectedOption
 }
