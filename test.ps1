@@ -31,3 +31,8 @@ while($pressedKey.VirtualKeyCode -ne 13)
     }
     [Console]::SetCursorPosition(0,($currentCursorPosition - $consoleHeight))
 }
+
+$selectedLine = -1
+Write-Host $(If ($selectedLines -band 1) {"[x]"} Else {"[ ]"}) "Option 1" -ForegroundColor $(If ($selectedLine -eq 0) {"Green"} Else {"White"})
+Write-Host $(If ($selectedLines -band 2) {"[x]"} Else {"[ ]"}) "Option 2" -ForegroundColor $(If ($selectedLine -eq 1) {"Green"} Else {"White"})
+Write-Host $(If ($selectedLines -band 4) {"[x]"} Else {"[ ]"}) "Option 3" -ForegroundColor $(If ($selectedLine -eq 2) {"Green"} Else {"White"})
