@@ -28,18 +28,27 @@ function GetPressedKeyCode() {
     return $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown").VirtualKeyCode
 }
 
+function ToggleAllSelection($selectedOptions, $optionsCount) {
+    $maximum = [math]::Pow(2, $optionsCount) - 1
+    if($maximum -eq $selectedOptions) {
+        return 0
+    } else {
+        return $maximum
+    }
+}
+
 function ToggleSelection($selectedOption, $selectedOptions) {
     return $selectedOptions -bxor [math]::Pow(2, $selectedOption)
 }
 
-function MoveToNext($optionsCount) {
+function MoveToNext($selectedOption, $optionsCount) {
     if($selectedOption -eq $optionsCount - 1) {
         return 0
     }
     return $selectedOption + 1
 }
 
-function MoveToPrevious($optionsCount) {
+function MoveToPrevious($selectedOption, $optionsCount) {
     if($selectedOption -eq 0) {
         return $optionsCount - 1
     }
@@ -58,6 +67,7 @@ function GetSelectedOptions($options) {
             40 { $selectedOption = MoveToNext $selectedOption $options.Count }
             38 { $selectedOption = MoveToPrevious $selectedOption $options.Count }
             32 { $selectedOptions = ToggleSelection $selectedOption $selectedOptions }
+            65 { $selectedOptions = ToggleAllSelection $selectedOptions $options.Count }
         }
         DeleteLines $options.Count
     }
